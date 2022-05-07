@@ -11,32 +11,17 @@
 #include <stdint.h>
 #include "dllapi.h"
 
-
 /*!
 	Gets the pointer size of the platform
 	@return the pointer size
 */
-inline int Platform_GetPointerSize()
-{
-	return sizeof(void*);
-}
+inline int Platform_GetPointerSize();
 
 /*!
 	Checks if the platform is big endian
 	@return true if the platform is big endian
 */
-inline bool Platform_IsBigEndian()
-{
-	uint16_t t = 1;
-	const unsigned char* c = (unsigned char*)(&t);
-
-	/*
-		*c == 1 -> little endian
-		*c != 1 -> big endian
-	*/
-
-	return *c != 1;
-}
+inline bool Platform_IsBigEndian();
 
 /*!
 	Swap bytes for endianness mismatch (type1)

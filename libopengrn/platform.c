@@ -7,6 +7,32 @@
 */
 #include "platform.h"
 
+
+/*!
+	Gets the pointer size of the platform
+	@return the pointer size
+*/
+OG_DLLAPI int Platform_GetPointerSize() {
+    return sizeof(void*);
+}
+
+/*!
+	Checks if the platform is big endian
+	@return true if the platform is big endian
+*/
+OG_DLLAPI bool Platform_IsBigEndian()
+{
+    uint16_t t = 1;
+    const unsigned char* c = (unsigned char*)(&t);
+
+    /*
+		*c == 1 -> little endian
+		*c != 1 -> big endian
+	*/
+
+    return *c != 1;
+}
+
 /*!
 	Swap bytes for endianness mismatch (type1)
 	@param data the data to swap

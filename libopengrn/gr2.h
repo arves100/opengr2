@@ -12,6 +12,10 @@
 #include "structures.h"
 #include "darray.h"
 
+#ifdef __cplusplus
+extern "C"{
+#endif
+
 typedef struct SGr2
 {
 	/* for fixing data...*/
@@ -40,3 +44,7 @@ extern bool OG_DLLAPI Gr2_Compose(TGr2* gr2);
 extern void OG_DLLAPI Gr2_SetDefaultInfo(TGr2* gr2, bool is64, bool isBe, uint32_t fileFormat);
 
 extern bool OG_DLLAPI Gr2_AddElement(TGr2* gr2, TElementInfo* elem, bool addToRoot, size_t* posOut);
+
+#ifdef __cplusplus
+}
+#endif
