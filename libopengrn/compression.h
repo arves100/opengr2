@@ -7,8 +7,9 @@
 */
 #pragma once
 
-#include <stdint.h>
 #include "dllapi.h"
+#include <stdbool.h>
+#include <stdint.h>
 
 /*!
 	Currently known compression types
@@ -29,3 +30,10 @@ enum ECompressionTypes
 	@return the extra bytes to allocate
 */
 extern OG_DLLAPI int Compression_GetExtraLen(uint32_t nType);
+
+extern OG_DLLAPI bool Compression_UnOodle1(uint8_t* compressedData,
+                                           uint32_t compressedLength,
+                                           uint8_t* decompressedData,
+                                           uint32_t decompressedLength,
+                                           uint32_t oodleStop1,
+                                           uint32_t oodleStop2);
