@@ -231,32 +231,42 @@ OG_DLLAPI bool Gr2_Load(const uint8_t* data, size_t len, TGr2* gr2)
 			if (gr2->mismatchEndianness)
 				Platform_Swap1(pComp, sector.compressedLen);
 
-#if 0
+            uint8_t *pDecomp = (uint8_t*)malloc(sector.decompressLen);
+
 			switch (sector.compressType)
 			{
-
+#if 0
 			case COMPRESSION_TYPE_OODLE0:
 				success = Compression_UnOodle0(pCompData, sct.compressedLen, pDecompData, cnt.info.decompressLen);
 				break;
+#endif
 			case COMPRESSION_TYPE_OODLE1:
-				success = Compression_UnOodle1(pCompData, cnt.info.compressedLen, pDecompData, cnt.info.decompressLen, cnt.info.oodleStop0, cnt.info.oodleStop1);
-				break;
+				success = Compression_UnOodle1(pComp, sector.compressedLen, pDecomp, sector.decompressLen, sector.oodleStop0, sector.oodleStop1);
+                break;
+#if 0
 			case COMPRESSION_TYPE_BITKNIT1:
 				success = Compression_UnBitknit1(pCompData, cnt.info.compressedLen, pDecompData, cnt.info.decompressLen);
 				break;
 			case COMPRESSION_TYPE_BITKNIT2:
 				success = Compression_UnBitknit2(pCompData, cnt.info.compressedLen, pDecompData, cnt.info.decompressLen);
 				break;
-
+#endif
 			default:
 				return false;
+//#endif
 			}
-#endif
+
 
 			if (!success)
 			{
 				dbg_printf("decompression of %d fail", sector.compressType);
-			}
+			} else {
+                printf("Copy decompressed data at offset %i with length of %i (size %i)\n", ofs, sector.decompressLen, gr2->dataSize);
+                memcpy_s(gr2->data + ofs, gr2->dataSize - ofs, pDecomp, sector.decompressLen);
+
+                if (gr2->mismatchEndianness)
+                    Platform_Swap1(gr2->data + ofs, sector.decompressLen); /* should be done on compressed data as well */
+            }
 		}
 
 		/* must be done on decompressed data only */

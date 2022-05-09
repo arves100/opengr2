@@ -443,6 +443,8 @@ bool OG_DLLAPI Element_Parse(const uint8_t* type, const uint8_t* data, bool is64
 		if (!Element_SetData(&elem, data + rootOffset, is64, &rootOffset))
 			return false;
 
+        printf("Element with type %i\n", elem.info.type);
+
 #ifdef _DEBUG
 		dbg_printf2("parsed %s type %u offset %I64u root %I64u datasize %I64u values", elem.name, elem.info.type, offset, rootOffset, elem.dataSize);
 		dbg_printelement(&elem);
