@@ -1,10 +1,13 @@
 /*!
-	Project: libopengrn
+	Project: gr2nfo/libopengrn
 	File: gr2nfo.c
-	Low level information dump of a gr2
+	Simple GR2 dumper with libopengrn low level api
 
-	Copyright (C) 2021 Arves100
+	This Source Code Form is subject to the terms of the Mozilla Public
+	License, v. 2.0. If a copy of the MPL was not distributed with this
+	file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "../libopengrn/gr2.h"
@@ -19,7 +22,7 @@ int main(int argc, char** argv)
 
 	DumpMemLeak();
 
-	printf("Granny2 dumper with Low Level libopengrn API (Copyright (C) 2021 Arves100)\n");
+	printf("Granny2 dumper\n");
 
 	fopen_s(&fp, argv[1], "rb");
 
