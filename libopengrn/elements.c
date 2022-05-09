@@ -6,12 +6,13 @@
 	Copyright (C) 2021 Arves100
 */
 #include "elements.h"
-#include "platform.h"
 #include "debug.h"
+#include "platform.h"
+#include "virtual_ptr.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 
 OG_DLLAPI TTypeInfo ELEMENT_TYPE_INFO[23] =
 {
@@ -112,7 +113,7 @@ static bool Element_SetData(TElementInfo* elem, const uint8_t* data, bool is64, 
 		return false;
 	}
 
-	elem->name = (char*)elem->info.nameOffset;
+	elem->name = (char*)decode_ptr(elem->info.nameOffset);
 	elem->dataSize = 0;
 	
 	if (!DArray_Init(&elem->children, sizeof(size_t), 3))
@@ -129,7 +130,7 @@ static bool Element_SetData(TElementInfo* elem, const uint8_t* data, bool is64, 
 		}
 		else
 		{
-			elem->data = (void*)*(uint32_t*)data;
+			elem->data = decode_ptr(*(uint32_t *)data);
 			*offset += ELEMENT_TYPE_INFO[elem->info.type].size32;
 		}
 
@@ -148,7 +149,7 @@ static bool Element_SetData(TElementInfo* elem, const uint8_t* data, bool is64, 
 		}
 		else
 		{
-			ptr = (char*)*(uint32_t*)data;
+			ptr = (char*) decode_ptr(*(uint32_t*)data);
 			*offset += ELEMENT_TYPE_INFO[elem->info.type].size32;
 		}
 
@@ -186,7 +187,7 @@ static bool Element_SetData(TElementInfo* elem, const uint8_t* data, bool is64, 
 		}
 		else
 		{
-			ref->offset = * (uint32_t*)(data + 4);
+			ref->offset = (uint64_t) decode_ptr(*(uint32_t*)(data + 4));
 			*offset += ELEMENT_TYPE_INFO[elem->info.type].size32;
 		}
 
@@ -208,7 +209,7 @@ static bool Element_SetData(TElementInfo* elem, const uint8_t* data, bool is64, 
 				src = *(uint64_t*)(ref->offset + (sizeof(void*) * i));
 			}
 			else
-				src = *(uint32_t*)(ref->offset + (sizeof(void*) * i));
+				src = (uint64_t) decode_ptr(*(uint32_t*)(ref->offset + 4 * i));
 
 			memcpy_s(dst, sizeof(void*), &src, sizeof(void*));
 		}
@@ -363,7 +364,7 @@ static bool Element_ParseInfo(const uint8_t* data, TNodeTypeInfo* info, bool is6
 
 static bool Element_ParseNode(TElementInfo* elem, bool is64, TDArray* global)
 {
-	const uint8_t* typeRoot = (uint8_t*)elem->info.childrenOffset;
+	const uint8_t* typeRoot = (uint8_t*) decode_ptr(elem->info.childrenOffset);
 
 	if (!typeRoot)
 		return true;
@@ -442,8 +443,6 @@ bool OG_DLLAPI Element_Parse(const uint8_t* type, const uint8_t* data, bool is64
 	{
 		if (!Element_SetData(&elem, data + rootOffset, is64, &rootOffset))
 			return false;
-
-        printf("Element with type %i\n", elem.info.type);
 
 #ifdef _DEBUG
 		dbg_printf2("parsed %s type %u offset %I64u root %I64u datasize %I64u values", elem.name, elem.info.type, offset, rootOffset, elem.dataSize);

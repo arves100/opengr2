@@ -15,6 +15,7 @@
 #include "magic.h"
 #include "platform.h"
 #include "compression.h"
+#include "virtual_ptr.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -78,9 +79,9 @@ static bool Gr2_LoadFileInfo(TGr2* gr2, const uint8_t* data, size_t len, bool ex
 */
 static void Gr2_ApplyFixUp(TGr2* gr2, uint32_t srcSector, TFixUpData* fd)
 {
-	uint8_t* dst = gr2->data + gr2->sectorOffsets[fd->dstSector] + fd->dstOffset;
-	uint8_t* src = gr2->data + gr2->sectorOffsets[srcSector] + fd->srcOffset;
-	uint32_t dstPtr = (uint32_t)dst; /* TODO: does this work on 64bit? probably not... */
+	void* dst = gr2->data + gr2->sectorOffsets[fd->dstSector] + fd->dstOffset;
+    void* src = gr2->data + gr2->sectorOffsets[srcSector] + fd->srcOffset;
+	uint32_t dstPtr = encode_ptr(dst);
 
 	memcpy_s(src, 4, &dstPtr, 4); /* 4 -> Pointer size on 32bit */
 }
@@ -261,7 +262,6 @@ OG_DLLAPI bool Gr2_Load(const uint8_t* data, size_t len, TGr2* gr2)
 			{
 				dbg_printf("decompression of %d fail", sector.compressType);
 			} else {
-                printf("Copy decompressed data at offset %i with length of %i (size %i)\n", ofs, sector.decompressLen, gr2->dataSize);
                 memcpy_s(gr2->data + ofs, gr2->dataSize - ofs, pDecomp, sector.decompressLen);
 
                 if (gr2->mismatchEndianness)
