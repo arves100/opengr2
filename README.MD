@@ -1,7 +1,10 @@
 # OpenGr2
 Open source Granny2 Input/Output library and tools written in C.
 
+You can view a documentation of the file format [here](https://github.com/arves100/opengr2/wiki/File-Format-documentation).
+
 ## Compatibility table
+In case a Gr2 file does not load, feel free to open an issue, make sure to dump it with gr2nfo first to see where it fails.
 
 | Functionality | Status |
 | ------------- | ------ |
@@ -13,6 +16,7 @@ Open source Granny2 Input/Output library and tools written in C.
 | Oodle-1 compression/decompression | ⚠️ (Only decompression is supported) |
 | Bitknit-1 compression/decompression | ❌ |
 | Bitknit-2 compression/decompression | ❌ |
+| High level API | ❌ |
 
 ## Low Level/High Level API
 The Granny2 format was built to be extensible by its creators, game companies could alter the nodes that contains the meshes or its structure.
