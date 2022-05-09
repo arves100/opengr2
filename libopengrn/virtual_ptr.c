@@ -19,7 +19,7 @@ uint32_t encode_ptr(const void *ptr) {
     }
 
     uint32_t virtual_ptr = array.count + 1;
-    DArray_Add(&array, &ptr);
+    DArray_Add(&array, (void*) & ptr);
 
     return virtual_ptr;
 }

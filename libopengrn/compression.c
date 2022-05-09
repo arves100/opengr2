@@ -44,7 +44,9 @@ bool OG_DLLAPI Compression_UnOodle1(uint8_t* compressedData,
         return true;
     }
 
-    TParameter parameters[3] = {};
+    TParameter parameters[3];
+
+    memset(parameters, 0, sizeof(parameters));
     memcpy(parameters, compressedData, sizeof(parameters));
 
     TDecoder decoder;

@@ -238,7 +238,7 @@ static bool Element_SetData(TElementInfo* elem, const uint8_t* data, bool is64, 
 		}
 		else
 		{
-			ref->data = (void*)*(uint32_t*)(data + 4);
+			ref->data = decode_ptr(* (uint32_t*)(data + 4));
 
 			*offset += ELEMENT_TYPE_INFO[elem->info.type].size32;
 		}
@@ -269,7 +269,7 @@ static bool Element_SetData(TElementInfo* elem, const uint8_t* data, bool is64, 
 		{
 			ref->offset = *(uint32_t*)data;
 			ref->size = *(uint32_t*)(data + 4);
-			ref->data = (void*)*(uint32_t*)(data + 8);
+			ref->data = decode_ptr(* (uint32_t*)(data + 8));
 
 			*offset += ELEMENT_TYPE_INFO[elem->info.type].size32;
 		}
@@ -298,7 +298,7 @@ static bool Element_SetData(TElementInfo* elem, const uint8_t* data, bool is64, 
 		else
 		{
 			ref->offset = *(uint32_t*)data;
-			ref->data = (void*)*(uint32_t*)(data + 4);
+			ref->data = decode_ptr(* (uint32_t*)(data + 4));
 
 			*offset += ELEMENT_TYPE_INFO[elem->info.type].size32;
 		}

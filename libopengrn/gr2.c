@@ -429,10 +429,14 @@ bool OG_DLLAPI Gr2_AddElement(TGr2* gr2, TElementInfo* elem, bool addToRoot, siz
 
 bool OG_DLLAPI Gr2_Compose(TGr2* gr2)
 {
+	// TODO
+
 	size_t completeSize;
 
 	for (size_t i = 0; i < gr2->elements.count; i++)
 	{
 
 	}
+
+	return false;
 }

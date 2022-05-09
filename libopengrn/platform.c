@@ -14,7 +14,7 @@
 	Gets the pointer size of the platform
 	@return the pointer size
 */
-OG_DLLAPI int Platform_GetPointerSize() {
+int Platform_GetPointerSize() {
     return sizeof(void*);
 }
 
@@ -22,7 +22,7 @@ OG_DLLAPI int Platform_GetPointerSize() {
 	Checks if the platform is big endian
 	@return true if the platform is big endian
 */
-OG_DLLAPI bool Platform_IsBigEndian()
+bool Platform_IsBigEndian()
 {
     uint16_t t = 1;
     const unsigned char* c = (unsigned char*)(&t);

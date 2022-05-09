@@ -17,13 +17,13 @@
 	Gets the pointer size of the platform
 	@return the pointer size
 */
-inline int Platform_GetPointerSize();
+extern inline int Platform_GetPointerSize();
 
 /*!
 	Checks if the platform is big endian
 	@return true if the platform is big endian
 */
-inline bool Platform_IsBigEndian();
+extern inline bool Platform_IsBigEndian();
 
 /*!
 	Swap bytes for endianness mismatch (type1)

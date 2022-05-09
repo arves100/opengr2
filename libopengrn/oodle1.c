@@ -15,6 +15,10 @@
 #include <memory.h>
 #include <stdio.h>
 
+#ifdef _MSC_VER
+#include <crtdbg.h>
+#endif
+
 #define min(x, y) ((x) > (y)) ? (y) : (x)
 #define max(x, y) ((x) > (y)) ? (x) : (y)
 
@@ -190,7 +194,11 @@ IndexValuePair WeightWindow_Try_Decode(TWeighWindow *weighWindow, TDecoder *deco
         }
     }
     if(rangeit == 0) {
+#ifdef _MSC_VER
+        _CrtDbgBreak();
+#else
         asm("int $3");
+#endif
         rangeit = 0;
     }
     rangeit--;
