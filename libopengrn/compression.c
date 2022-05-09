@@ -1,11 +1,13 @@
-// Oodle1 compression code is derived from https://github.com/Arbos/nwn2mdk/blob/master/nwn2mdk-lib/gr2_decompress.cpp
-
 /*!
 	Project: libopengrn
 	File: compression.h
 	Compression/Decompression API
 
-	Copyright (C) 2021 Arves100
+    Oodle1 compression code is derived from https://github.com/Arbos/nwn2mdk/blob/master/nwn2mdk-lib/gr2_decompress.cpp
+
+    This Source Code Form is subject to the terms of the Mozilla Public
+    License, v. 2.0. If a copy of the MPL was not distributed with this
+    file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 #include "compression.h"
 #include <memory.h>
@@ -22,6 +24,16 @@ int OG_DLLAPI Compression_GetExtraLen(uint32_t nType)
 	return (nType == COMPRESSION_TYPE_OODLE0 || nType == COMPRESSION_TYPE_OODLE1) ? 4 : 0;
 }
 
+/*!
+    Decompresses data with algorithm Oodle-1
+    @param compressedData the compressed data to decompress
+    @param compressedLength length of the compressed data
+    @param decompressedData A buffer which will store the decompressed data
+    @param decompressedLength length of the decompressed data
+    @param oodleStop1 first stop byte of oodle
+    @param oodleStop2 second stop byte of oodle
+    @return true if the decompression succeeded, otherwise false
+*/
 bool OG_DLLAPI Compression_UnOodle1(uint8_t* compressedData,
                           uint32_t compressedLength,
                           uint8_t* decompressedData,

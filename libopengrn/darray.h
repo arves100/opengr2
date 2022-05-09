@@ -3,7 +3,9 @@
 	File: darray.h
 	Simple dynamic array
 
-	Copyright (C) 2021 Arves100
+	This Source Code Form is subject to the terms of the Mozilla Public
+	License, v. 2.0. If a copy of the MPL was not distributed with this
+	file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 #pragma once
 
@@ -15,6 +17,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 typedef struct SDArray {
     size_t count;
     size_t elementSize;
@@ -31,6 +34,7 @@ extern OG_DLLAPI bool DArray_Resize(TDArray *a, size_t newSize);
 extern OG_DLLAPI bool DArray_Add(TDArray *a, void *element);
 
 extern OG_DLLAPI void *DArray_Get(TDArray *a, size_t idx);
+
 #ifdef __cplusplus
 }
 #endif

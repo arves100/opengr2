@@ -3,7 +3,9 @@
 	File: compression.h
 	Compression/Decompression API
 
-	Copyright (C) 2021 Arves100
+	This Source Code Form is subject to the terms of the Mozilla Public
+	License, v. 2.0. If a copy of the MPL was not distributed with this
+	file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 #pragma once
 
@@ -12,6 +14,7 @@
 #include <stdint.h>
 
 /*!
+	@enum ECompressionTypes
 	Currently known compression types
 */
 enum ECompressionTypes
@@ -23,7 +26,6 @@ enum ECompressionTypes
 	COMPRESSION_TYPE_BITKNIT2,
 };
 
-
 /*!
 	Gets the extra bytes that needs to be allocated for the specific compression
 	@param nType the compression type
@@ -31,6 +33,16 @@ enum ECompressionTypes
 */
 extern OG_DLLAPI int Compression_GetExtraLen(uint32_t nType);
 
+/*!
+	Decompresses data with algorithm Oodle-1
+	@param compressedData the compressed data to decompress
+	@param compressedLength length of the compressed data
+	@param decompressedData A buffer which will store the decompressed data
+	@param decompressedLength length of the decompressed data
+	@param oodleStop1 first stop byte of oodle
+	@param oodleStop2 second stop byte of oodle
+	@return true if the decompression succeeded, otherwise false
+*/
 extern OG_DLLAPI bool Compression_UnOodle1(uint8_t* compressedData,
                                            uint32_t compressedLength,
                                            uint8_t* decompressedData,

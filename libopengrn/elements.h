@@ -3,7 +3,9 @@
 	File: elements.h
 	Definition of Gr2 element API
 
-	Copyright (C) 2021 Arves100
+	This Source Code Form is subject to the terms of the Mozilla Public
+	License, v. 2.0. If a copy of the MPL was not distributed with this
+	file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 #pragma once
 
@@ -31,10 +33,10 @@ enum TypeIDs
 	TYPEID_REFERENCETOARRAY = 3, // Reference to an array
 	TYPEID_ARRAYOFREFERENCES = 4, // Array containing a numbers of pointers
 	TYPEID_VARIANTREFERENCE = 5, // Reference with offset
-	TYPEID_REMOVED = 6, // TODO: what is this
+	TYPEID_REMOVED = 6, // TODO: We know this was used to be reference or a custom type, is there anything that reference this?
 	TYPEID_REFERENCETOVARIANTARRAY = 7, // Reference to an array with offset
 	TYPEID_STRING = 8,
-	TYPEID_TRANSFORM = 9, // TODO: discover the structure
+	TYPEID_TRANSFORM = 9,
 	TYPEID_REAL32 = 10,
 	TYPEID_INT8 = 11,
 	TYPEID_UINT8 = 12,
