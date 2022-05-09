@@ -12,7 +12,7 @@ set(SOURCE_FILES
         libopengrn/gr2.c
         libopengrn/platform.c
         libopengrn/magic.c
-        libopengrn/oodle1.c)
+        libopengrn/oodle1.c libopengrn/virtual_ptr.c)
 
 set(HEADER_FILES
         libopengrn/compression.h
@@ -24,7 +24,7 @@ set(HEADER_FILES
         libopengrn/magic.h
         libopengrn/platform.h
         libopengrn/structures.h
-        libopengrn/oodle1.h)
+        libopengrn/oodle1.h libopengrn/virtual_ptr.h)
 
 add_library(opengr2 STATIC ${SOURCE_FILES} ${HEADER_FILES})
 target_include_directories(opengr2 PUBLIC .)
