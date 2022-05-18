@@ -11,7 +11,6 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "dllapi.h"
 
 /*!
 	Gets the pointer size of the platform
@@ -30,11 +29,11 @@ extern inline bool Platform_IsBigEndian();
 	@param data the data to swap
 	@param len the length of the data
 */
-extern OG_DLLAPI void Platform_Swap1(uint8_t* data, size_t len);
+extern void Platform_Swap1(uint8_t* data, size_t len);
 
 /*!
 	Swap bytes for endianness mismatch (type2)
 	@param data the data to swap
 	@param len the length of the data
 */
-extern OG_DLLAPI void Platform_Swap2(uint8_t* data, size_t len);
+extern void Platform_Swap2(uint8_t* data, size_t len);

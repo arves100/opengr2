@@ -10,6 +10,7 @@
 #pragma once
 
 #include <stdio.h>
+#include "elements.h"
 
 #ifdef _DEBUG
 
@@ -25,7 +26,7 @@
 
 extern void dbg_printf_real(const char* file, size_t line, const char* fmt, ...);
 extern void dbg_printf_no_line(const char* fmt, ...);
-extern void dbg_printelement(struct SElementInfo* element);
+extern void dbg_printelement(TElementGeneric* element);
 
 #define dbg_printf2(fmt, ...) dbg_printf_real(__FILE__, __LINE__, fmt, ##__VA_ARGS__)
 #define dbg_printf(fmt, ...) dbg_printf_real(__FILE__, __LINE__, fmt "\n", ##__VA_ARGS__)

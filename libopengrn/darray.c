@@ -47,6 +47,8 @@ bool OG_DLLAPI DArray_Init(TDArray* a, size_t elementSize, size_t initialSize)
 
 OG_DLLAPI void* DArray_Get(TDArray* a, size_t idx)
 {
+	void* ptrout;
+
 	if (idx > a->count)
 	{
 		dbg_printf("darray get out of bounds %zu is bigger than %zu", idx, a->count);
@@ -73,6 +75,9 @@ bool OG_DLLAPI DArray_Resize(TDArray* a, size_t newSize)
 
 bool OG_DLLAPI DArray_Add(TDArray* a, void* element)
 {
+	if (!a->reserved)
+		return false;
+
 	if ((a->count + 1) > a->reserved)
 	{
 		if (!DArray_Resize(a, a->count + 1))

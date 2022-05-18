@@ -55,9 +55,19 @@ int main(int argc, char** argv)
 
 	fclose(fp);
 
-	Gr2_Init(&gr2);
+	if (!Gr2_Init(&gr2))
+	{
+		Gr2_Free(&gr2);
+
+		free(data);
+		printf("Cannot init gr2 structure\n");
+		return 1;
+	}
+
 	if (!Gr2_Load(data, l, &gr2))
 	{
+		Gr2_Free(&gr2);
+
 		free(data);
 		printf("Cannot load gr2 file\n");
 		return 1;
@@ -91,17 +101,16 @@ int main(int argc, char** argv)
 
 	for (size_t i = 0; i < gr2.elements.count; i++)
 	{
-		TElementInfo* info = (TElementInfo*)DArray_Get(&gr2.elements, i);
+		TElementGeneric* info = *(TElementGeneric**)DArray_Get(&gr2.elements, i);
 
-		printf("Element %zu: %u %u %I64u %p %s\n", i, info->info.arraySize, info->info.type, info->info.extra4, info->data, info->name);
+		printf("Element %zu: %u %u %I64u %u %s\n", i, info->rawInfo.arraySize, info->rawInfo.type, info->rawInfo.extra4, info->size, info->name);
 	}
 
-	for (size_t i = 0; i < gr2.root.children.count; i++)
+	for (size_t i = 0; i < gr2.root->childrens.count; i++)
 	{
-		size_t pos = *(size_t*)DArray_Get(&gr2.root.children, i);
-		TElementInfo* info = (TElementInfo*)DArray_Get(&gr2.elements, pos);
+		TElementGeneric* info = *(TElementGeneric**)DArray_Get(&gr2.elements, i);
 
-		printf("Root children %zu: %u %u %I64u %p %s\n", i, info->info.arraySize, info->info.type, info->info.extra4, info->data, info->name);
+		printf("Root children %zu: %u %u %I64u %u %s\n", i, info->rawInfo.arraySize, info->rawInfo.type, info->rawInfo.extra4, info->size, info->name);
 	}
 
 	Gr2_Free(&gr2);

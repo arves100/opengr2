@@ -13,122 +13,117 @@
 #include "structures.h"
 
 /*!
-	Information about element types
+	Gr2 generic element
 */
-typedef struct STypeInfo
+typedef struct SElementGeneric
 {
-	uint32_t size32; /* size of the element in 32bit mode */
-	uint32_t size64; /* size of the element in 64bit mode */
-	uint32_t swapSize; /* size for swap type in marshalling fix */
-} TTypeInfo;
+	TNodeTypeInfo rawInfo; //! Raw node info
+	const char* name; //! Node name
+	TDArray childrens; //! Dynamic array that stores the pointers of the childrens
+	uint32_t size; /// Size of the element array (which is also used in the number of array elements), in case of string this will determine the length
+} TElementGeneric;
 
 /*!
-	Gr2 element types
+	Gr2 string element (TYPEID_STRING)
 */
-enum TypeIDs
+typedef struct SElementString
 {
-	TYPEID_NONE = 0,
-	TYPEID_INLINE = 1, // Empty node with just childrens
-	TYPEID_REFERENCE = 2, // Reference to a pointer
-	TYPEID_REFERENCETOARRAY = 3, // Reference to an array
-	TYPEID_ARRAYOFREFERENCES = 4, // Array containing a numbers of pointers
-	TYPEID_VARIANTREFERENCE = 5, // Reference with offset
-	TYPEID_REMOVED = 6, // TODO: We know this was used to be reference or a custom type, is there anything that reference this?
-	TYPEID_REFERENCETOVARIANTARRAY = 7, // Reference to an array with offset
-	TYPEID_STRING = 8,
-	TYPEID_TRANSFORM = 9,
-	TYPEID_REAL32 = 10,
-	TYPEID_INT8 = 11,
-	TYPEID_UINT8 = 12,
-	TYPEID_BINORMALINT8 = 13, // TODO: discover what changes between this and int8
-	TYPEID_NORMALUINT8 = 14, // TODO: discover what changes between this and uint8
-	TYPEID_INT16 = 15,
-	TYPEID_UINT16 = 16,
-	TYPEID_BINORMALINT16 = 17, // TODO: discover what changes between this and int16
-	TYPEID_NORMALUINT16 = 18, // TODO: discover what changes between this and uint16
-	TYPEID_INT32 = 19,
-	TYPEID_UINT32 = 20,
-	TYPEID_REAL16 = 21, // half-sized floating value
-	TYPEID_EMPTYREFERENCE = 22,
-	// End of known elements as of Granny 2.12.0.2 (mostly this will be all)
+	TElementGeneric base; //! Base element
 
-	TYPEID_MAX,
-};
+	/*!
+		Pointer to a buffer which contains a string
+		@note If the length is not 0, it means that the program has allocated
+			a new buffer for value, therefore it should be manually cleared, if the length
+			if 0, it means that the buffer cannot be deallocated.
 
-/*!
-	Global holder of element type info
-*/
-extern OG_DLLAPI TTypeInfo ELEMENT_TYPE_INFO[23];
-
-/*!
-	Gr2 element (like ArtToolInfo)
-*/
-typedef struct SElementInfo
-{
-	TNodeTypeInfo info;
-	const char* name; /* name */
-	TDArray children; /* childrens */
-
-	/*
-		pointer to data
-
-		Possible values:
-			Type 3, 4, 5, 7: pointer to its structure
-			Type 8: pointer to a string
-			Type 0, 1: NULL
-			Type 2, 22: pointer
-			other types: new type[1...n]
+		@note THE LIBRARY MAKES NO CHECK WHENVER LENGTH OF VALUE ARE OK, THE PROGRAMMER
+			HAS TO MANUALLY ENSURE SETTING PROPER DATA!
+		@note The length is base.size
 	*/
-	void* data;
-	uint64_t dataSize; /* complete size of the data */
-} TElementInfo;
+	const char* value; //! String value
+} TElementString;
+
+#define GR2_DEFINE_ELEMENT(name, type) typedef struct SElement##name { TElementGeneric base; type * value; } TElement##name;
+
+// TYPEID_INT8
+// TYPEID_BINORMALINT8
+GR2_DEFINE_ELEMENT(Int8, int8_t);
+
+// TYPEID_UINT8
+// TYPEID_NORMALUINT8
+GR2_DEFINE_ELEMENT(Uint8, uint8_t);
+
+// TYPEID_INT16
+// TYPEID_BINORMALINT16
+GR2_DEFINE_ELEMENT(Int16, int16_t);
+
+// TYPEID_UINT16
+// TYPEID_NORMALUINT16
+// TYPEID_REAL16
+GR2_DEFINE_ELEMENT(Uint16, uint16_t);
+
+// TYPEID_INT32
+GR2_DEFINE_ELEMENT(Int32, int32_t);
+
+// TYPEID_UINT32
+GR2_DEFINE_ELEMENT(Uint32, uint32_t);
+
+// TYPEID_REAL32
+GR2_DEFINE_ELEMENT(Float, float);
+
+// TYPEID_TRANSFORM
+GR2_DEFINE_ELEMENT(Transform, TTransformation);
 
 /*!
-	Used in Type3
+	Gr2 reference type
+
+	Any type that is:
+	- TYPEID_REFERENCE
+	- TYPEID_EMPTYREFERENCE
+	- TYPEID_VARIANTREFERENCE
 */
-typedef struct SReferenceToArrayData
+typedef struct SElementReference
 {
-	uint32_t size; /* length of the array */
-	void* data; /* pointer size 32/64 */
-} TReferenceToArrayData;
+	TElementGeneric base; /// Base element
+	uint64_t offset; /// Offset from the pointer of reference, used in variant type of reference
+
+	/*!
+		Contains a pointer to a reference
+		@note THIS REFERENCE IS ENCAPSULATED WITH VIRTUAL_PTRS
+		KEEP IN MIND BEFORE ACCESSING OR MODIFYING
+	*/
+	TElementGeneric* reference;
+} TElementReference;
 
 /*!
-	Used in Type7
+	Gr2 array
+
+	Any type that is:
+	- TYPEID_ARRAYOFREFERENCES
+	- TYPEID_REFERENCETOVARIANTARRAY
+	- TYPEID_REFERENCETOARRAY
 */
-typedef struct SReferenceToVariantArrayData
+typedef struct SElementArray
 {
-	uint64_t offset; /* position of the array */
-	uint32_t size; /* length of the array */
-	void* data; /* pointer size 32/64 */
-} TReferenceToVariantArrayData;
+	TElementGeneric base; /// Base element
+	uint64_t offset; /// Offset from the pointer of data, used in variant type of reference
 
-/*!
-	Used in Type5
-*/
-typedef struct SVariantReference
-{
-	uint64_t offset; /* where the pointer is */
-	void* data; /* position of the reference */
-} TVariantReference;
+	/*!
+		Contains a pointer to an array
 
-/*!
-	Used on Type4
-*/
-typedef struct SArrayReferenceData
-{
-	uint32_t size; /* length of the array */
-	uint64_t offset; /* location of reference info */
-	void** ptr; /* array of pointers */
-} TArrayReferenceData;
+		Possible values of this:
+			TYPEID_ARRAYOFREFERENCES:
+				Must be casted into TElementReference**
+			TYPEID_REFERENCETOVARIANTARRAY or TYPEID_REFERENCETOARRAY:
+				Must be a structure with all the nodes of the children
 
-extern OG_DLLAPI bool Element_New(uint32_t type, const char* name, TElementInfo* out);
-extern OG_DLLAPI void Element_Free(TElementInfo* elem);
+		@note THIS REFERENCE IS ENCAPSULATED WITH VIRTUAL_PTRS
+		KEEP IN MIND BEFORE ACCESSING OR MODIFYING
+	*/
+	void** data;
+} TElementArray;
 
-extern OG_DLLAPI bool Element_Parse(const uint8_t* type, const uint8_t* data, bool is64, TDArray* da, TElementInfo* parent);
-
-extern OG_DLLAPI bool Element_SetPrimitiveData(TElementInfo* elem, const uint8_t* data);
-extern OG_DLLAPI bool Element_AddToChild(TElementInfo* elem, size_t arrayPos);
-
-extern OG_DLLAPI bool Element_CreateArray(TElementInfo* elem, size_t len);
-extern OG_DLLAPI bool Element_AddToArray(TElementInfo* elem, size_t pos, void* data);
-
+extern TElementGeneric* Element_CreateFromTypeInfo(TDArray* vptr, TNodeTypeInfo* info);
+extern bool Element_Parse(TDArray* vptr, const uint8_t* type, const uint8_t* data, bool is64, TDArray* global, TElementGeneric* parent, uint64_t* rootOffset);
+extern void Element_Free(TElementGeneric** elem);
+extern bool Element_New(uint32_t type, const char* name, TElementGeneric** out);

@@ -3,11 +3,15 @@ set(SOURCE_FILES
         darray.c
         debug.c
         elements.c
+        elements_set.c
         gr2.c
+        gr2_read.c
+        gr2_write.c
         platform.c
         magic.c
         oodle1.c
         virtual_ptr.c
+        typeinfo.c
 )
 
 set(HEADER_FILES
@@ -22,6 +26,7 @@ set(HEADER_FILES
         structures.h
         oodle1.h
         virtual_ptr.h
+        typeinfo.h
 )
 
 if (NOT OPENGRN_STATIC)

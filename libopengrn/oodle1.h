@@ -11,9 +11,9 @@
 */
 #pragma once
 
-#include <stdint.h>
-
 #include "dllapi.h"
+
+#include <stdint.h>
 
 typedef struct {
     unsigned decoded_value_max : 9;

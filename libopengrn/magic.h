@@ -10,6 +10,7 @@
 #pragma once
 
 #include "dllapi.h"
+
 #include <stdint.h>
 #include <stdbool.h>
 

@@ -9,12 +9,12 @@
 */
 #include "platform.h"
 
-
 /*!
 	Gets the pointer size of the platform
 	@return the pointer size
 */
-int Platform_GetPointerSize() {
+int Platform_GetPointerSize()
+{
     return sizeof(void*);
 }
 
@@ -40,7 +40,7 @@ bool Platform_IsBigEndian()
 	@param data the data to swap
 	@param len the length of the data
 */
-OG_DLLAPI void Platform_Swap1(uint8_t* data, size_t len)
+void Platform_Swap1(uint8_t* data, size_t len)
 {
 	if (len < 4)
 		return;
@@ -61,7 +61,7 @@ OG_DLLAPI void Platform_Swap1(uint8_t* data, size_t len)
 	@param data the data to swap
 	@param len the length of the data
 */
-OG_DLLAPI void Platform_Swap2(uint8_t* data, size_t len)
+void Platform_Swap2(uint8_t* data, size_t len)
 {
 	if (len < 4)
 		return;

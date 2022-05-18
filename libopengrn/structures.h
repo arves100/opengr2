@@ -153,10 +153,13 @@ typedef struct SNodeTypeInfo
 	uint64_t extra4; /* pointer size */
 } TNodeTypeInfo;
 
+/*!
+	Mesh transformation (tralsation+rotation+scaling)
+*/
 typedef struct STransformation
 {
-	uint32_t flags;
-	float translation[3]; /* x,y,z translation */
-	float rotation[4]; /* x,y,z,w rotation */
-	float scaleShear[3][3]; /* x, y, z scaling */
+	uint32_t flags; // TODO: discover what flags
+	float translation[3]; /// X,Y,Z traslation
+	float rotation[4]; /// X,Y,Z,W rotation
+	float scaleShear[3][3]; /// Scale matrix
 } TTransformation;

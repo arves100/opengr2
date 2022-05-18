@@ -12,6 +12,7 @@
 #include <stdint.h>
 
 #include "dllapi.h"
+#include "gr2.h"
 
-extern OG_DLLAPI uint32_t encode_ptr(const void *ptr);
-extern OG_DLLAPI void* decode_ptr(uint32_t ptr);
+extern uint32_t encode_ptr(TDArray* array, const void *ptr);
+extern void* decode_ptr(TDArray* array, uint32_t ptr);
