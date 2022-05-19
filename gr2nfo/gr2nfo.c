@@ -24,7 +24,7 @@ int main(int argc, char** argv)
 
 	printf("Granny2 dumper\n");
 
-	fopen_s(&fp, argv[1], "rb");
+	fp = fopen(argv[1], "rb");
 
 	if (!fp)
 	{

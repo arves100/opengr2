@@ -13,6 +13,7 @@
 #include "magic.h"
 #include "typeinfo.h"
 #include "elements.h"
+#include <stdlib.h>
 
 OG_DLLAPI bool Gr2_Init(TGr2* gr2)
 {

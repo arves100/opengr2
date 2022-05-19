@@ -50,7 +50,7 @@ void OG_DLLAPI Magic_Set(uint32_t* magic, uint8_t flags)
 	{
 		if (flags == MAGIC_DATA[i].flags)
 		{
-			memcpy_s(magic, 16, MAGIC_DATA[i].magic, 16);
+			memcpy(magic, MAGIC_DATA[i].magic, 16);
 		}
 	}
 }

@@ -8,10 +8,14 @@
 	file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 #include "gr2.h"
+
+#include <stdlib.h>
+
 #include "debug.h"
 #include "compression.h"
 #include "magic.h"
 #include "virtual_ptr.h"
+#include "platform.h"
 
 /*!
 	Loads and checks the file information from the byte data
@@ -38,7 +42,7 @@ static bool Gr2_LoadFileInfo(TGr2* gr2, const uint8_t* data, size_t len, bool ex
 	gr2->fileInfo = *(TFileInfo*)(data + sizeof(THeader));
 
 	if (gr2->mismatchEndianness)
-		Platform_Swap1((uint8_t*)&gr2->fileInfo, sizeof(gr2->fileInfo));
+        Platform_Swap1((uint8_t*)&gr2->fileInfo, sizeof(gr2->fileInfo));
 
 	if (gr2->fileInfo.fileInfoSize != requiredSize)
 	{
@@ -75,7 +79,7 @@ static void Gr2_ApplyFixUp(TGr2* gr2, uint32_t srcSector, TFixUpData* fd)
 	void* src = gr2->data + gr2->sectorOffsets[srcSector] + fd->srcOffset;
 	uint32_t dstPtr = encode_ptr(&gr2->virtual_ptr, dst);
 
-	memcpy_s(src, 4, &dstPtr, 4); /* 4 -> Pointer size on 32bit */
+	memcpy(src, &dstPtr, 4); /* 4 -> Pointer size on 32bit */
 }
 
 /*!
@@ -226,7 +230,7 @@ OG_DLLAPI bool Gr2_Load(const uint8_t* data, size_t len, TGr2* gr2)
 
 		if (sector.compressType == COMPRESSION_TYPE_NONE)
 		{
-			memcpy_s(gr2->data + ofs, gr2->dataSize - ofs, data + sector.dataOffset, sector.decompressLen);
+			memcpy(gr2->data + ofs, data + sector.dataOffset, sector.decompressLen);
 
 			if (gr2->mismatchEndianness)
 				Platform_Swap1(gr2->data + ofs, sector.decompressLen); /* should be done on compressed data as well */
@@ -247,7 +251,7 @@ OG_DLLAPI bool Gr2_Load(const uint8_t* data, size_t len, TGr2* gr2)
 			if (extraLen) // Required for Oodle
 				memset(pComp + sector.compressedLen, 0, extraLen);
 
-			memcpy_s(pComp, sector.compressedLen + extraLen, data + sector.dataOffset, sector.compressedLen);
+			memcpy(pComp, data + sector.dataOffset, sector.compressedLen);
 
 			if (gr2->mismatchEndianness)
 				Platform_Swap1(pComp, sector.compressedLen);
@@ -289,7 +293,7 @@ OG_DLLAPI bool Gr2_Load(const uint8_t* data, size_t len, TGr2* gr2)
 				return false;
 			}
 			else {
-				memcpy_s(gr2->data + ofs, gr2->dataSize - ofs, pDecomp, sector.decompressLen);
+				memcpy(gr2->data + ofs, pDecomp, sector.decompressLen);
 
 				if (gr2->mismatchEndianness)
 					Platform_Swap1(gr2->data + ofs, sector.decompressLen); /* should be done on compressed data as well */

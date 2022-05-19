@@ -13,6 +13,7 @@
 
 #include "dllapi.h"
 
+#include <string.h>
 #include <stdint.h>
 
 typedef struct {

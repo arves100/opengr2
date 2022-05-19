@@ -69,7 +69,7 @@ bool TypeInfo_Parse(const uint8_t* data, TNodeTypeInfo* info, bool is64, uint64_
 
 	*offset += 4;
 
-	memcpy_s(ni.extra, 12, data + *offset, 12);
+	memcpy(ni.extra, data + *offset, 12);
 	*offset += sizeof(ni.extra);
 
 	if (is64)

@@ -84,7 +84,7 @@ bool OG_DLLAPI DArray_Add(TDArray* a, void* element)
 			return false;
 	}
 
-	memcpy_s(a->data + (a->count * a->elementSize), a->elementSize * a->reserved, element, a->elementSize);
+	memcpy(a->data + (a->count * a->elementSize), element, a->elementSize);
 	a->count++;
 	return true;
 }

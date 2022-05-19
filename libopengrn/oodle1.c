@@ -11,8 +11,8 @@
 */
 
 #include "oodle1.h"
-#include <malloc.h>
 #include <memory.h>
+#include <stdlib.h>
 #include <stdio.h>
 
 #ifdef _MSC_VER
@@ -194,11 +194,6 @@ IndexValuePair WeightWindow_Try_Decode(TWeighWindow *weighWindow, TDecoder *deco
         }
     }
     if(rangeit == 0) {
-#ifdef _MSC_VER
-        _CrtDbgBreak();
-#else
-        asm("int $3");
-#endif
         rangeit = 0;
     }
     rangeit--;
@@ -240,7 +235,7 @@ IndexValuePair WeightWindow_Try_Decode(TWeighWindow *weighWindow, TDecoder *deco
     uint16_t* oldBuffer = weighWindow->values;
     weighWindow->valuesLength++;
     weighWindow->values = malloc(weighWindow->valuesLength * sizeof(uint16_t));
-    memcpy_s(weighWindow->values, weighWindow->valuesLength * sizeof(uint16_t), oldBuffer, oldLength * sizeof(uint16_t));
+    memcpy(weighWindow->values, oldBuffer, oldLength * sizeof(uint16_t));
     free(oldBuffer);
     weighWindow->values[weighWindow->valuesLength - 1] = 0;
 
@@ -248,7 +243,7 @@ IndexValuePair WeightWindow_Try_Decode(TWeighWindow *weighWindow, TDecoder *deco
     oldBuffer = weighWindow->weights;
     weighWindow->weightsLength++;
     weighWindow->weights = malloc(weighWindow->weightsLength * sizeof(uint16_t));
-    memcpy_s(weighWindow->weights, weighWindow->weightsLength * sizeof(uint16_t), oldBuffer, oldLength * sizeof(uint16_t));
+    memcpy(weighWindow->weights, oldBuffer, oldLength * sizeof(uint16_t));
     free(oldBuffer);
     weighWindow->weights[weighWindow->weightsLength - 1] = 2;
 
