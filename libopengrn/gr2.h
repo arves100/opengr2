@@ -61,6 +61,7 @@ extern void OG_DLLAPI Gr2_Free(TGr2* gr2);
 	@return true if the load succedded, otherwise false
 */
 extern bool OG_DLLAPI Gr2_Load(const uint8_t* src, size_t len, TGr2* gr2);
+
 extern bool OG_DLLAPI Gr2_Compose(TGr2* gr2);
 
 /*!
@@ -80,7 +81,7 @@ extern void OG_DLLAPI Gr2_SetDefaultInfo(TGr2* gr2, bool is64, bool isBe, uint32
 	@param posOut output position of the element in the dynamic array
 	@return true if a new element was added, otherwise false
 */
-//extern bool OG_DLLAPI Gr2_AddElement(TGr2* gr2, TElementInfo* elem, bool addToRoot, size_t* posOut);
+extern TElementGeneric* OG_DLLAPI Gr2_AddElement(TGr2* gr2, uint8_t type, const char* name, TElementGeneric* root);
 
 #ifdef __cplusplus
 }

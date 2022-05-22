@@ -32,10 +32,10 @@ OG_DLLAPI void Gr2_Free(TGr2* gr2)
 {
 	Element_Free(&gr2->root);
 
-	for (size_t i = 0; i < gr2->elements.count; i++)
+	/*for (size_t i = 0; i < gr2->elements.count; i++)
 	{
 		Element_Free((TElementGeneric**)DArray_Get(&gr2->elements, i));
-	}
+	}*/
 
 	DArray_Free(&gr2->elements);
 
@@ -98,16 +98,27 @@ void OG_DLLAPI Gr2_SetDefaultInfo(TGr2* gr2, bool is64, bool isBe, uint32_t file
 	memset(gr2->fileInfo.extra, 0, sizeof(gr2->fileInfo.extra));
 }
 
-bool OG_DLLAPI Gr2_AddElement(TGr2* gr2, TElementGeneric* elem, TElementGeneric* parent, size_t* posOut)
+TElementGeneric* OG_DLLAPI Gr2_AddElement(TGr2* gr2, uint8_t type, const char* name, TElementGeneric* root)
 {
-	if (!DArray_Add(&gr2->elements, elem))
-		return false;
+	TElementGeneric* g;
 
-	if (!DArray_Add(&elem->childrens, &elem))
-		return false;
+	if (!root)
+		root = gr2->root;
 
-	if (posOut)
-		*posOut = gr2->elements.count - 1;
+	if (!Element_New(type, name, &g))
+		return NULL;
 
-	return true;
+	if (!DArray_Add(&gr2->elements, &g))
+	{
+		Element_Free(&g);
+		return NULL;
+	}
+
+	if (!DArray_Add(&root->childrens, &g))
+	{
+		Element_Free(&g);
+		return NULL;
+	}
+
+	return g;
 }
