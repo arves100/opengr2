@@ -106,7 +106,7 @@ int main(int argc, char** argv)
 		printf("Element %zu: %u %u %I64u %u %s\n", i, info->rawInfo.arraySize, info->rawInfo.type, info->rawInfo.extra4, info->size, info->name);
 	}
 
-	for (size_t i = 0; i < gr2.root->childrens.count; i++)
+	for (size_t i = 0; i < gr2.root->children.count; i++)
 	{
 		TElementGeneric* info = *(TElementGeneric**)DArray_Get(&gr2.elements, i);
 
