@@ -11,6 +11,7 @@ set(SOURCE_FILES
         magic.c
         oodle1.c
         virtual_ptr.c
+        crc.c
         typeinfo.c
 )
 
@@ -27,6 +28,7 @@ set(HEADER_FILES
         oodle1.h
         virtual_ptr.h
         typeinfo.h
+        crc.h
 )
 
 if (NOT OPENGRN_STATIC)

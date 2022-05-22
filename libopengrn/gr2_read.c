@@ -8,14 +8,14 @@
 	file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 #include "gr2.h"
-
-#include <stdlib.h>
-
 #include "debug.h"
 #include "compression.h"
 #include "magic.h"
 #include "virtual_ptr.h"
 #include "platform.h"
+#include "crc.h"
+
+#include <stdlib.h>
 
 /*!
 	Loads and checks the file information from the byte data
@@ -27,6 +27,7 @@
 static bool Gr2_LoadFileInfo(TGr2* gr2, const uint8_t* data, size_t len, bool extra16)
 {
 	uint8_t requiredSize = 0x38;
+	uint32_t crc;
 
 	if (extra16)
 		requiredSize += 16;
@@ -62,7 +63,14 @@ static bool Gr2_LoadFileInfo(TGr2* gr2, const uint8_t* data, size_t len, bool ex
 		return false;
 	}
 
-	/* TODO: crc32 calc */
+	crc = CRC32(data + gr2->fileInfo.fileInfoSize + sizeof(THeader), len - gr2->fileInfo.fileInfoSize - sizeof(THeader));
+
+	if (crc != gr2->fileInfo.crc32)
+	{
+		dbg_printf("Invalid CRC32 %u != %u\n", crc, gr2->fileInfo.crc32);
+		return false;
+	}
+
 	return true;
 }
 
