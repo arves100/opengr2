@@ -61,6 +61,8 @@ bool OG_DLLAPI Compression_UnOodle1(uint8_t* compressedData,
         while(ptr < decompressedData + steps[i]) {
             ptr += Dictionary_Decompress_Block(&dict, &decoder, ptr);
         }
+
+        Dictionary_Free(&dict);
     }
 
     return true;

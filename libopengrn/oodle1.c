@@ -11,6 +11,7 @@
 */
 
 #include "oodle1.h"
+#include "debug.h"
 #include <memory.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -59,6 +60,13 @@ uint16_t Commit(TDecoder *decoder, uint16_t max, uint16_t val, uint16_t err) {
 
 uint16_t Decode_Commit(TDecoder *decoder, uint16_t max) {
     return Commit(decoder, max, Decode(decoder, max), 1);
+}
+
+void WeighWindow_Free(TWeighWindow* weighWindow)
+{
+    free(weighWindow->ranges);
+    free(weighWindow->weights);
+    free(weighWindow->values);
 }
 
 void WeighWindow_Init(TWeighWindow *weighWindow, uint32_t maxValue, uint16_t countCap) {
@@ -267,6 +275,37 @@ IndexValuePair WeightWindow_Try_Decode(TWeighWindow *weighWindow, TDecoder *deco
     ret.value = 0;
     //printf("\n");
     return ret;
+}
+
+void Dictionary_Free(TDictionary* dictionary) {
+    size_t i = 0;
+    size_t index = 0;
+
+    WeighWindow_Free(&dictionary->lowbit_window);
+    WeighWindow_Free(&dictionary->highbit_window);
+
+    for (; i < dictionary->highbit_value_max; ++i) {
+        WeighWindow_Free(&dictionary->midbit_windows[i]);
+    }
+
+    for (i = 0; i < 4; ++i) {
+        WeighWindow_Free(&dictionary->decoded_windows[i]);
+    }
+
+    for (i = 0; i < 4; ++i) {
+        for (size_t j = 0; j < 16; ++j) {
+            WeighWindow_Free(&dictionary->size_windows[index++]);
+        }
+    }
+
+    WeighWindow_Free(&dictionary->size_windows[index++]);
+
+    free(dictionary->midbit_windows);
+    free(dictionary->decoded_windows);
+    free(dictionary->size_windows);
+    dictionary->size_windows = NULL;
+    dictionary->decoded_windows = NULL;
+    dictionary->midbit_windows = NULL;
 }
 
 void Dictionary_Init(TDictionary *dictionary, TParameter *parameter) {

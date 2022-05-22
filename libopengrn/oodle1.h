@@ -75,15 +75,17 @@ typedef struct {
     uint16_t value;
 } IndexValuePair;
 
-extern OG_DLLAPI void Decoder_Init(TDecoder *decoder, uint8_t* stream);
-extern OG_DLLAPI uint16_t Decode(TDecoder *decoder, uint16_t max);
-extern OG_DLLAPI uint16_t Commit(TDecoder *decoder, uint16_t max, uint16_t val, uint16_t err);
-extern OG_DLLAPI uint16_t Decode_Commit(TDecoder *decoder, uint16_t max);
+extern void Decoder_Init(TDecoder *decoder, uint8_t* stream);
+extern uint16_t Decode(TDecoder *decoder, uint16_t max);
+extern uint16_t Commit(TDecoder *decoder, uint16_t max, uint16_t val, uint16_t err);
+extern uint16_t Decode_Commit(TDecoder *decoder, uint16_t max);
 
-extern OG_DLLAPI void WeighWindow_Init(TWeighWindow *weighWindow, uint32_t maxValue, uint16_t countCap);
-extern OG_DLLAPI void WeightWindow_Rebuild_Weights(TWeighWindow *weighWindow);
-extern OG_DLLAPI void WeightWindow_Rebuild_Ranges(TWeighWindow *weighWindow);
-extern OG_DLLAPI IndexValuePair WeightWindow_Try_Decode(TWeighWindow *weighWindow, TDecoder *decoder);
+extern void WeighWindow_Init(TWeighWindow *weighWindow, uint32_t maxValue, uint16_t countCap);
+extern void WeighWindow_Free(TWeighWindow *weighWindow);
+extern void WeightWindow_Rebuild_Weights(TWeighWindow *weighWindow);
+extern void WeightWindow_Rebuild_Ranges(TWeighWindow *weighWindow);
+extern IndexValuePair WeightWindow_Try_Decode(TWeighWindow *weighWindow, TDecoder *decoder);
 
-extern OG_DLLAPI void Dictionary_Init(TDictionary *dictionary, TParameter *parameter);
-extern OG_DLLAPI uint32_t Dictionary_Decompress_Block(TDictionary *dictionary, TDecoder *decoder, uint8_t *decompressedData);
+extern void Dictionary_Init(TDictionary *dictionary, TParameter *parameter);
+extern uint32_t Dictionary_Decompress_Block(TDictionary *dictionary, TDecoder *decoder, uint8_t *decompressedData);
+extern void Dictionary_Free(TDictionary *dictionary);
