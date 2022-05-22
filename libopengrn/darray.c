@@ -47,9 +47,7 @@ bool OG_DLLAPI DArray_Init(TDArray* a, size_t elementSize, size_t initialSize)
 
 OG_DLLAPI void* DArray_Get(TDArray* a, size_t idx)
 {
-	void* ptrout;
-
-	if (idx > a->count)
+	if ((idx + 1) > a->count)
 	{
 		dbg_printf("darray get out of bounds %zu is bigger than %zu", idx, a->count);
 		return NULL;
