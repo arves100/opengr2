@@ -3,7 +3,7 @@ set(SOURCE_FILES
         darray.c
         debug.c
         elements.c
-        elements_set.c
+        elements_parse.c
         gr2.c
         gr2_read.c
         gr2_write.c
@@ -35,12 +35,12 @@ else()
         set(LIB_VARIANT STATIC)
 endif()
 
-add_library(libopengrn STATIC ${SOURCE_FILES} ${HEADER_FILES})
+add_library(opengrn STATIC ${SOURCE_FILES} ${HEADER_FILES})
 
-target_include_directories(libopengrn PUBLIC .)
+target_include_directories(opengrn PUBLIC .)
 
 if (NOT OPENGRN_STATIC)
-        target_compile_definitions(libopengrn PRIVATE -DBUILD_LIBOPENGRN)
+        target_compile_definitions(opengrn PRIVATE -DBUILD_LIBOPENGRN)
 else()
-        target_compile_definitions(libopengrn PUBLIC -DBUILD_LIBOPENGRN_STATIC)
+        target_compile_definitions(opengrn PUBLIC -DBUILD_LIBOPENGRN_STATIC)
 endif()
