@@ -151,17 +151,7 @@ TElementGeneric* Element_CreateFromTypeInfo(TDArray* vptr, TNodeTypeInfo* info)
 
 		elem->size = 1;
 
-		if (info->type == TYPEID_ARRAYOFREFERENCES)
-		{
-			((TElementArray*)elem)->data = malloc(sizeof(void*));
-			if (!((TElementArray*)elem)->data)
-			{
-				free(elem);
-				return NULL;
-			}
-		}
-		else
-			((TElementArray*)elem)->data = NULL;
+        ((TElementArray*)elem)->data = NULL;
 		((TElementArray*)elem)->offset = 0;
 		break;
 

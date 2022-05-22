@@ -12,6 +12,8 @@
 #include "typeinfo.h"
 #include "virtual_ptr.h"
 
+#include <stdlib.h>
+
 #define TYPE_ELEMENT(type, ctype) ((type*)elem)->value = (ctype*)(data + ofs); \
 								  ofs += sizeof(ctype) * elem->size;
 
@@ -159,6 +161,8 @@ bool Element_ParsePrimitive(TDArray* vptr, TElementGeneric* elem, const uint8_t*
 	case TYPEID_ARRAYOFREFERENCES: // 4
 		elem->size = *(uint32_t*)(data + ofs);
 		ofs += 4;
+
+        ((TElementArray*)elem)->data = malloc(sizeof(void*) * elem->size);
 
 		if (b64)
 		{
