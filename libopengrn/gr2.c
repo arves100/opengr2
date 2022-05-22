@@ -114,7 +114,7 @@ TElementGeneric* OG_DLLAPI Gr2_AddElement(TGr2* gr2, uint8_t type, const char* n
 		return NULL;
 	}
 
-	if (!DArray_Add(&root->childrens, &g))
+	if (!DArray_Add(&root->children, &g))
 	{
 		Element_Free(&g);
 		return NULL;

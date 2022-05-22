@@ -105,7 +105,7 @@ static void Gr2_ApplyMarshall(TGr2* gr2, uint32_t srcSector, TMarshallData* md, 
 			you will have a target sector + target offset
 
 			The target sector define the type to actually swap (it's a t_Type* structure)
-			if the type == 1, simply process it's childrens
+			if the type == 1, simply process it's children
 
 			The swap is done by 4 bytes each:
 			t_Type* curr = (t_Type*)&marshallData->targetSector[marshallData->targetOffset];

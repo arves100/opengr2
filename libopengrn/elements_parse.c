@@ -1,6 +1,6 @@
 /*!
 	Project: libopengrn
-	File: elements_set.c
+	File: elements_parse.c
 	Setup element nodes
 
 	This Source Code Form is subject to the terms of the Mozilla Public
@@ -279,7 +279,7 @@ bool Element_Parse(TDArray* vptr, const uint8_t* type, const uint8_t* data, bool
 		if (!DArray_Add(global, &newElement))
 			return false;
 
-		if (!DArray_Add(&parent->childrens, &newElement))
+		if (!DArray_Add(&parent->children, &newElement))
 			return false;
 	}
 

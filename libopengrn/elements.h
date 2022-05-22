@@ -19,7 +19,7 @@ typedef struct SElementGeneric
 {
 	TNodeTypeInfo rawInfo; //! Raw node info
 	const char* name; //! Node name
-	TDArray childrens; //! Dynamic array that stores the pointers of the childrens
+	TDArray children; //! Dynamic array that stores the pointers of the children
 	uint32_t size; /// Size of the element array (which is also used in the number of array elements), in case of string this will determine the length
 } TElementGeneric;
 

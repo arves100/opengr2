@@ -26,7 +26,7 @@
 									((type*)elem)->value = NULL;
 
 
-static bool Element_CanHaveChildrens(uint32_t type)
+static bool Element_CanHaveChildren(uint32_t type)
 {
 	return type == TYPEID_REFERENCETOARRAY || type == TYPEID_INLINE || type == TYPEID_ARRAYOFREFERENCES || type == TYPEID_REFERENCETOVARIANTARRAY ||
 		type == TYPEID_VARIANTREFERENCE || type == TYPEID_REFERENCE;
@@ -63,13 +63,13 @@ void OG_DLLAPI Element_Free(TElementGeneric** elem)
 	if ((*elem)->rawInfo.type == TYPEID_ARRAYOFREFERENCES)
 		free(((TElementArray*)(*elem))->data);
 
-	for (size_t i = 0; i < (*elem)->childrens.count; i++)
+	for (size_t i = 0; i < (*elem)->children.count; i++)
 	{
-		// free all childrens
-		Element_Free((TElementGeneric**)DArray_Get(&(*elem)->childrens, i));
+		// free all children
+		Element_Free((TElementGeneric**)DArray_Get(&(*elem)->children, i));
 	}
 
-	DArray_Free(&(*elem)->childrens);
+	DArray_Free(&(*elem)->children);
 	free(*elem);
 	elem = NULL;
 }
@@ -191,7 +191,7 @@ TElementGeneric* Element_CreateFromTypeInfo(TDArray* vptr, TNodeTypeInfo* info)
 	else
 		elem->name = NULL;
 
-	if (!DArray_Init(&elem->childrens, sizeof(TElementGeneric*), Element_CanHaveChildrens(elem->rawInfo.type) ? 1 : 0))
+	if (!DArray_Init(&elem->children, sizeof(TElementGeneric*), Element_CanHaveChildren(elem->rawInfo.type) ? 1 : 0))
 	{
 		free(elem);
 		return NULL;
@@ -217,26 +217,3 @@ bool Element_New(uint32_t type, const char* name, TElementGeneric** out)
 	*out = elem;
 	return true;
 }
-
-#if 0 // TODO: refactor later...
-bool Element_CreateArray(TElementInfo* elem, size_t len)
-{
-	elem->dataSize = len * ELEMENT_TYPE_INFO[elem->info.type].size32;
-	elem->data = malloc((size_t)elem->dataSize);
-
-	if (!elem->data)
-		return false;
-
-	memset(elem->data, 0, (size_t)elem->dataSize);
-	return true;
-}
-
-OG_DLLAPI bool Element_AddToArray(TElementInfo* elem, size_t pos, void* data)
-{
-	if (((pos + 1) * ELEMENT_TYPE_INFO[elem->info.type].size32) > elem->dataSize)
-		return false;
-
-	//memcpy_s((char*)elem->data + (pos * ELEMENT_TYPE_INFO[elem->info.type].size32), data, ELEMENT_TYPE_INFO[elem->info.type].size32);
-	return true;
-}
-#endif

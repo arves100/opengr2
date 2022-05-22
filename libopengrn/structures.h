@@ -147,7 +147,7 @@ typedef struct SNodeTypeInfo
 {
 	uint32_t type; /* the type of the node */
 	uint64_t nameOffset; /* pointer to the name */
-	uint64_t childrenOffset; /* pointer to the childrens of the node */
+	uint64_t childrenOffset; /* pointer to the children of the node */
 	int32_t arraySize; /* size of the array, if the node supports arrays */
 	uint32_t extra[3]; /* unknown bytes */
 	uint64_t extra4; /* pointer size */

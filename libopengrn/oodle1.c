@@ -19,8 +19,13 @@
 #include <crtdbg.h>
 #endif
 
+#ifndef min
 #define min(x, y) ((x) > (y)) ? (y) : (x)
+#endif
+
+#ifndef max
 #define max(x, y) ((x) > (y)) ? (x) : (y)
+#endif
 
 void Decoder_Init(TDecoder *decoder, uint8_t* stream) {
     decoder->numer = stream[0] >> 1;

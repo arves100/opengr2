@@ -22,7 +22,7 @@ typedef struct STypeInfo
 enum TypeIDs
 {
 	TYPEID_NONE = 0, /// No node
-	TYPEID_INLINE = 1, /// Empty node with just childrens
+	TYPEID_INLINE = 1, /// Empty node with just children
 	TYPEID_REFERENCE = 2, /// Reference to a pointer
 	TYPEID_REFERENCETOARRAY = 3, /// Reference to an array
 	TYPEID_ARRAYOFREFERENCES = 4, /// Array containing a numbers of pointers
