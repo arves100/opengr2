@@ -72,7 +72,7 @@ bool Element_ParsePrimitive(TDArray* vptr, TElementGeneric* elem, const uint8_t*
 	case TYPEID_EMPTYREFERENCE: // 22
 		if (b64)
 		{
-			((TElementReference*)elem)->reference = (void*)*(uint64_t*)(data + ofs);
+			((TElementReference*)elem)->reference = decode_ptr(vptr, *(uint64_t*)(data + ofs));
 			ofs += 8;
 		}
 		else
@@ -89,12 +89,12 @@ bool Element_ParsePrimitive(TDArray* vptr, TElementGeneric* elem, const uint8_t*
 
 		if (b64)
 		{
-			((TElementString*)elem)->value = (char*)*(uint64_t*)(data + ofs);
+			((TElementString*)elem)->value = (char*)decode_ptr(vptr, *(uint64_t*)(data + ofs));
 			ofs += 8;
 		}
 		else
 		{
-			((TElementString*)elem)->value = (char*)decode_ptr(vptr , *(uint32_t*)(data + ofs));
+			((TElementString*)elem)->value = (char*)decode_ptr(vptr, *(uint32_t*)(data + ofs));
 			ofs += 4;
 		}
 
@@ -107,7 +107,7 @@ bool Element_ParsePrimitive(TDArray* vptr, TElementGeneric* elem, const uint8_t*
 
 		if (b64)
 		{
-			((TElementArray*)elem)->data = (void*)*(uint64_t*)(data + ofs);
+			((TElementArray*)elem)->data = decode_ptr(vptr, *(uint64_t*)(data + ofs));
 			ofs += 8;
 		}
 		else
@@ -125,7 +125,7 @@ bool Element_ParsePrimitive(TDArray* vptr, TElementGeneric* elem, const uint8_t*
 			ofs += 8;
 			elem->size = *(uint32_t*)(data + ofs);
 			ofs += 4;
-			((TElementArray*)elem)->data = (void**) * (uint64_t*)(data + ofs);
+			((TElementArray*)elem)->data = (void**)decode_ptr(vptr, *(uint64_t*)(data + ofs));;
 			ofs += 8;
 		}
 		else
@@ -145,7 +145,7 @@ bool Element_ParsePrimitive(TDArray* vptr, TElementGeneric* elem, const uint8_t*
 		{
 			((TElementArray*)elem)->offset = *(uint64_t*)(data + ofs);
 			ofs += 8;
-			((TElementArray*)elem)->data = (void**)*(uint64_t*)(data + ofs);
+			((TElementArray*)elem)->data = (void**)decode_ptr(vptr, *(uint64_t*)(data + ofs));
 			ofs += 8;
 		}
 		else
@@ -166,7 +166,7 @@ bool Element_ParsePrimitive(TDArray* vptr, TElementGeneric* elem, const uint8_t*
 
 		if (b64)
 		{
-			((TElementArray*)elem)->offset = *(uint64_t*)(data + ofs);
+			((TElementArray*)elem)->offset = (uint64_t)decode_ptr(vptr, *(uint64_t*)(data + ofs));
 			ofs += 8;
 		}
 		else
@@ -181,8 +181,7 @@ bool Element_ParsePrimitive(TDArray* vptr, TElementGeneric* elem, const uint8_t*
 
 			if (b64)
 			{
-				// note: C4047 will be fixed once virtual_ptr will be added for 64-bit
-				((TElementArray*)e2)->data[i] = *(uint64_t*)(e2->offset + (i*8));
+				((TElementArray*)e2)->data[i] = decode_ptr(vptr, *(uint64_t*)(e2->offset + (i * 8)));
 			}
 			else
 			{
