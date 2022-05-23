@@ -31,7 +31,7 @@ enum ECompressionTypes
 	@param nType the compression type
 	@return the extra bytes to allocate
 */
-extern OG_DLLAPI int Compression_GetExtraLen(uint32_t nType);
+extern int Compression_GetExtraLen(uint32_t nType);
 
 /*!
 	Decompresses data with algorithm Oodle-1
@@ -41,11 +41,13 @@ extern OG_DLLAPI int Compression_GetExtraLen(uint32_t nType);
 	@param decompressedLength length of the decompressed data
 	@param oodleStop1 first stop byte of oodle
 	@param oodleStop2 second stop byte of oodle
+	@param endianessMismatch if the file has a different endianess
 	@return true if the decompression succeeded, otherwise false
 */
-extern OG_DLLAPI bool Compression_UnOodle1(uint8_t* compressedData,
+extern bool Compression_UnOodle1(uint8_t* compressedData,
                                            uint32_t compressedLength,
                                            uint8_t* decompressedData,
                                            uint32_t decompressedLength,
                                            uint32_t oodleStop1,
-                                           uint32_t oodleStop2);
+                                           uint32_t oodleStop2,
+	                                       bool endianessMismatch);

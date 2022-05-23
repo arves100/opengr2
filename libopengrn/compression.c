@@ -10,16 +10,17 @@
     file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 #include "compression.h"
-#include <memory.h>
-
+#include "platform.h"
 #include "oodle1.h"
+
+#include <memory.h>
 
 /*!
 	Gets the extra bytes that needs to be allocated for the specific compression
 	@param nType the compression type
 	@return the extra bytes to allocate
 */
-int OG_DLLAPI Compression_GetExtraLen(uint32_t nType)
+int Compression_GetExtraLen(uint32_t nType)
 {
 	return (nType == COMPRESSION_TYPE_OODLE0 || nType == COMPRESSION_TYPE_OODLE1) ? 4 : 0;
 }
@@ -34,12 +35,13 @@ int OG_DLLAPI Compression_GetExtraLen(uint32_t nType)
     @param oodleStop2 second stop byte of oodle
     @return true if the decompression succeeded, otherwise false
 */
-bool OG_DLLAPI Compression_UnOodle1(uint8_t* compressedData,
+bool Compression_UnOodle1(uint8_t* compressedData,
                           uint32_t compressedLength,
                           uint8_t* decompressedData,
                           uint32_t decompressedLength,
                           uint32_t oodleStop1,
-                          uint32_t oodleStop2) {
+                          uint32_t oodleStop2,
+                          bool endianessMismatch) {
     if(compressedLength == 0) {
         return true;
     }
@@ -48,6 +50,9 @@ bool OG_DLLAPI Compression_UnOodle1(uint8_t* compressedData,
 
     memset(parameters, 0, sizeof(parameters));
     memcpy(parameters, compressedData, sizeof(parameters));
+
+    if (endianessMismatch)
+        Platform_Swap1(parameters, sizeof(parameters));
 
     TDecoder decoder;
     Decoder_Init(&decoder, compressedData + sizeof(parameters));
