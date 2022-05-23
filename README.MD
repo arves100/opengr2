@@ -8,14 +8,14 @@ In case a Gr2 file does not load, feel free to open an issue, make sure to dump 
 
 | Functionality | Status |
 | ------------- | ------ |
-| Basic parsing | ⚠️ (File Format 6 only, missing File Format 7) |
+| Basic parsing | ✔️ |
 | Basic writing | ❌ (WIP, missing Node creations) |
 | Big Endian files | ❌ (Theorical parsing support added with the exception of marshalling) |
 | 64-bit pointer files | ❌ (Typeinfo parsing should be ok, everything else no) |
-| Oodle-0 compression/decompression | ❌ |
-| Oodle-1 compression/decompression | ⚠️ (Only decompression is supported) |
-| Bitknit-1 compression/decompression | ❌ |
-| Bitknit-2 compression/decompression | ❌ |
+| Oodle-0 compression | ❌ |
+| Oodle-1 compression | ⚠️ (Only decompression is supported) |
+| Bitknit-1 compression | ❌ |
+| Bitknit-2 compression | ❌ |
 | High level API | ❌ |
 
 ## Low Level/High Level API
