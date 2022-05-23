@@ -11,7 +11,7 @@ In case a Gr2 file does not load, feel free to open an issue, make sure to dump 
 | Basic parsing | ✔️ |
 | Basic writing | ❌ (WIP, missing Node creations) |
 | Big Endian files | ❌ (Theorical parsing support added with the exception of marshalling) |
-| 64-bit pointer files | ❌ (Typeinfo parsing should be ok, everything else no) |
+| 64-bit pointer files | ✔️ |
 | Oodle-0 compression | ❌ |
 | Oodle-1 compression | ⚠️ (Only decompression is supported) |
 | Bitknit-1 compression | ❌ |

@@ -37,7 +37,7 @@ typedef struct SMagicInfo
 /*!
 	Global holder of magic info
 */
-extern OG_DLLAPI const TMagicInfo MAGIC_DATA[3];
+extern OG_DLLAPI const TMagicInfo MAGIC_DATA[];
 
 /*!
 	Gets the information of a magic

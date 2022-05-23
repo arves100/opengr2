@@ -81,13 +81,21 @@ static bool Gr2_LoadFileInfo(TGr2* gr2, const uint8_t* data, size_t len, bool ex
 	@param srcSector the current sector that contains the fixup data
 	@param fd fixup information
 */
-static void Gr2_ApplyFixUp(TGr2* gr2, uint32_t srcSector, TFixUpData* fd)
+static void Gr2_ApplyFixUp(TGr2* gr2, uint32_t srcSector, TFixUpData* fd, bool is64)
 {
 	void* dst = gr2->data + gr2->sectorOffsets[fd->dstSector] + fd->dstOffset;
 	void* src = gr2->data + gr2->sectorOffsets[srcSector] + fd->srcOffset;
-	uint32_t dstPtr = encode_ptr(&gr2->virtual_ptr, dst);
 
-	memcpy(src, &dstPtr, 4); /* 4 -> Pointer size on 32bit */
+	if (is64)
+	{
+		uint64_t dstPtr = encode_ptr(&gr2->virtual_ptr, dst);
+		memcpy(src, &dstPtr, sizeof(dstPtr));
+	}
+	else
+	{
+		uint32_t dstPtr = encode_ptr(&gr2->virtual_ptr, dst);
+		memcpy(src, &dstPtr, sizeof(dstPtr));
+	}
 }
 
 /*!
@@ -362,7 +370,7 @@ OG_DLLAPI bool Gr2_Load(const uint8_t* data, size_t len, TGr2* gr2)
 			if (gr2->mismatchEndianness)
 				Platform_Swap1((uint8_t*)fd, sizeof(TFixUpData));
 
-			Gr2_ApplyFixUp(gr2, i, fd);
+			Gr2_ApplyFixUp(gr2, i, fd, magicFlags & MAGIC_FLAG_64BIT);
 		}
 	}
 

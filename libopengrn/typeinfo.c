@@ -55,7 +55,7 @@ bool TypeInfo_Parse(const uint8_t* data, TNodeTypeInfo* info, bool is64, uint64_
 		ni.nameOffset = *(uint64_t*)(data + *offset);
 		*offset += 8;
 		ni.childrenOffset = *(uint64_t*)(data + *offset);
-		*offset += 16;
+		*offset += 8;
 	}
 	else
 	{
