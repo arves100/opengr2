@@ -102,7 +102,7 @@ bool Element_ParsePrimitive(TDArray* vptr, TElementGeneric* elem, const uint8_t*
 	}
 
 	case TYPEID_REFERENCETOARRAY: // 3
-		elem->size = *(uint32_t*)data;
+		elem->size = *(uint32_t*)(data + ofs);
 		ofs += 4;
 
 		if (b64)
@@ -256,6 +256,7 @@ bool Element_Parse(TDArray* vptr, const uint8_t* type, const uint8_t* data, bool
 
 	while (TypeInfo_Parse(type, &elem, is64, &offset))
 	{
+
 		newElement = Element_CreateFromTypeInfo(vptr, &elem);
 		if (!newElement)
 			return false;
