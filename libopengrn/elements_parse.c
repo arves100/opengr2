@@ -217,10 +217,17 @@ static bool Element_ParseNode(TDArray* vptr, TElementGeneric* elem, bool is64, T
 	else if (elem->rawInfo.type == TYPEID_REFERENCETOARRAY || elem->rawInfo.type == TYPEID_REFERENCETOVARIANTARRAY)
 	{
 		TElementArray* ref = (TElementArray*)elem;
-		if (!ref->data)
-			return true;
 
-		return Element_Parse(vptr, typeRoot, (const uint8_t*)ref->data + ref->offset, is64, global, elem, &newRootOffset);
+        for (uint32_t i = 0; i < ref->base.size; i++)
+        {
+            newRootOffset = 0;
+
+            if (!ref->data)
+                return true;
+
+            if(!Element_Parse(vptr, typeRoot, (const uint8_t *) ref->data + ref->offset + i * sizeof(uint32_t), is64, global, elem, &newRootOffset))
+                return false;
+        }
 	}
 	else if (elem->rawInfo.type == TYPEID_ARRAYOFREFERENCES)
 	{
