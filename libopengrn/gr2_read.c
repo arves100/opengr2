@@ -281,8 +281,9 @@ OG_DLLAPI bool Gr2_Load(const uint8_t* data, size_t len, TGr2* gr2)
 				success = Compression_UnOodle0(pCompData, sct.compressedLen, pDecompData, cnt.info.decompressLen);
 				break;
 #endif
+			case COMPRESSION_TYPE_OODLE0:
 			case COMPRESSION_TYPE_OODLE1:
-				success = Compression_UnOodle1(pComp, sector.compressedLen, pDecomp, sector.decompressLen, sector.oodleStop0, sector.oodleStop1);
+				success = Compression_UnOodle1(pComp, sector.compressedLen, pDecomp, sector.decompressLen, sector.oodleStop0, sector.oodleStop1, gr2->mismatchEndianness);
 				break;
 #if 0
 			case COMPRESSION_TYPE_BITKNIT1:

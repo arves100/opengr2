@@ -52,7 +52,7 @@ bool Compression_UnOodle1(uint8_t* compressedData,
     memcpy(parameters, compressedData, sizeof(parameters));
 
     if (endianessMismatch)
-        Platform_Swap1(parameters, sizeof(parameters));
+        Platform_Swap1((uint8_t*)parameters, sizeof(parameters));
 
     TDecoder decoder;
     Decoder_Init(&decoder, compressedData + sizeof(parameters));
